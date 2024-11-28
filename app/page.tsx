@@ -1,4 +1,5 @@
 import { PlusCircleIcon } from '@heroicons/react/24/solid'
+import Link from 'next/link'
 
 import { Entry } from "@/components/Entry";
 
@@ -41,7 +42,9 @@ export default function Home() {
                 </section>
             </main>
         </div>
-        <PlusCircleIcon className="text-slate-500 hover:text-slate-400 absolute bottom-12 right-16 size-16" />
+        <Link href="/create">
+            <PlusCircleIcon className="text-slate-500 hover:text-slate-400 absolute bottom-12 right-16 size-16" />
+        </Link>
       </div>
   );
 }

@@ -1,11 +1,21 @@
-import { Pool, QueryResult, PoolClient } from "pg";
+import { Pool, QueryResult, PoolClient, PoolConfig } from "pg";
 import { Result } from "@/models/result";
 
 interface DBResult extends Result {
     payload: QueryResult<any> | null;
 };
 
-const pool = new Pool({ idleTimeoutMillis: 30000 });
+const config: PoolConfig = {
+    user: process.env.POSTGRES_USER,
+    password: process.env.POSTGRES_PASSWORD,
+    host: process.env.POSTGRES_HOST,
+    database: process.env.POSTGRES_DB,
+    port: parseInt(process.env.POSTGRES_PORT!),
+    connectionTimeoutMillis: 2000,
+    idleTimeoutMillis: 30000
+}
+
+const pool = new Pool(config);
 pool.on("error", (error: Error, client: PoolClient) => {
     console.error(error);
 });

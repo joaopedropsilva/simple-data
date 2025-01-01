@@ -14,8 +14,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "open-training",
-  description: "Smart training management",
+  title: "simple-data",
+  description: "",
 };
 
 export default function RootLayout({

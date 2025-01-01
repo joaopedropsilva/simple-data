@@ -123,6 +123,11 @@ exports.up = (pgm) => {
                 onDelete: "CASCADE",
                 onUpdate: "CASCADE"
             },
+            updated_at: {
+                type: "timestamp with time zone",
+                notNull: true,
+                default: pgm.func("(now() at time zone 'utc')"),
+            },
             created_at: {
                 type: "timestamp with time zone",
                 notNull: true,

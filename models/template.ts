@@ -19,7 +19,7 @@ export async function getAllTemplates() {
     return { err, payload: payload!.rows };
 }
 
-export async function getAllTemplatesByUser(userId: number) {
+export async function getAllTemplatesByUser(userId: string) {
     const { err, payload } = 
         await query("SELECT * FROM template WHERE user_id = $1", [userId]);
 

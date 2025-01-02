@@ -31,7 +31,6 @@ export async function query(
     };
 
     let client;
-    let err;
     try {
         client = await pool.connect();
 
@@ -40,7 +39,7 @@ export async function query(
 
         result.payload = await client.query(text, params);
     } catch (error) {
-        result.err = `${err}`;
+        result.err = `${error}`;
         console.error(error);
     } finally {
         if (client)

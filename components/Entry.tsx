@@ -16,7 +16,6 @@ export function Entry({
     created_at,
     template_id
 }: EntryProps) { 
-
     const fields = (
         <div className="w-full flex items-center text-xs bg-gray-800 justify-between p-2 rounded-lg">
             <h4 className="text-slate-300 italic p-1">

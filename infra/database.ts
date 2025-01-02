@@ -1,6 +1,7 @@
 import { Pool, QueryResult, PoolClient, PoolConfig } from "pg";
 import { Result } from "@/models/result";
 
+
 interface DBResult extends Result {
     payload: QueryResult<any> | null;
 };
@@ -22,7 +23,7 @@ pool.on("error", (error: Error, client: PoolClient) => {
 
 export async function query(
     text: string,
-    params: any[]
+    params?: any[]
 ): Promise<DBResult> {
     const result: DBResult = {
         err: "",

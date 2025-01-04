@@ -14,6 +14,7 @@
     "migration:dry-run": "node-pg-migrate up -m ./migrations --dry-run --envPath ./.env"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.2.0",
     "next": "15.0.3",
     "pg": "^8.13.1",

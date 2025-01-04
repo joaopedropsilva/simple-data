@@ -1,5 +1,5 @@
-import { Button } from "@/app/_components/Button";
-import { Field } from "@/app/_components/Field";
+import { Button } from "@/_components/Button";
+import { Field } from "@/_components/Field";
 import { PlusIcon } from "@heroicons/react/24/solid"
 
 

@@ -1,10 +1,5 @@
 import { Pool, QueryResult, PoolClient, PoolConfig } from "pg";
-import { Result } from "@/models/result";
 
-
-interface DBResult extends Result {
-    payload: QueryResult<any> | null;
-};
 
 const config: PoolConfig = {
     user: process.env.POSTGRES_USER,
@@ -21,31 +16,36 @@ pool.on("error", (error: Error, client: PoolClient) => {
     console.error(error);
 });
 
+export interface DBResult {
+    err?: string;
+    rows: any[];
+}
+
 export async function query(
     text: string,
     params?: any[]
 ): Promise<DBResult> {
-    const result: DBResult = {
-        err: "",
-        payload: null
-    };
-
     let client;
+    let err;
+    let payload: QueryResult<any> | null = null;
     try {
         client = await pool.connect();
 
         if (!client)
             throw new Error("Client acquisition from pool failed unexpectedly");
 
-        result.payload = await client.query(text, params);
+        payload = await client.query(text, params);
     } catch (error) {
-        result.err = `${error}`;
+        err = `${err}`;
         console.error(error);
     } finally {
         if (client)
             client.release();
     }
 
-    return result;
+    return {
+        err,
+        rows: payload?.rows ?? []
+    };
 }
 

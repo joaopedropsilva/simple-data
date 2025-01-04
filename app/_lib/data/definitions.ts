@@ -1,6 +1,5 @@
 import { z } from "zod";
 
-
 export const User = z.object({
     id: z.string(),
     username: z.string(),
@@ -8,7 +7,6 @@ export const User = z.object({
     password: z.string(),
     created_at: z.date()
 });
-
 
 export const Template = z.object({
     id: z.string(),

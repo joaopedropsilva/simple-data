@@ -1,4 +1,4 @@
-import { getAllTemplates, getAllTemplatesByUser } from "@/models/template";
+import { getAllTemplates, getAllTemplatesByUser } from "@/app/_lib/data/access";
 import { NextRequest, NextResponse } from "next/server";
 
 

@@ -7,11 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "services:up": "docker compose --env-file .env -f ./infra/docker-compose.yml up -d",
-    "services:down": "docker compose --env-file .env -f ./infra/docker-compose.yml down",
-    "migration:create": "node-pg-migrate create -m ./infra/migrations",
-    "migration:up": "node-pg-migrate up -m ./infra/migrations --envPath ./.env",
-    "migration:dry-run": "node-pg-migrate up -m ./infra/migrations --dry-run --envPath ./.env"
+    "services:up": "docker compose --env-file .env up -d",
+    "services:down": "docker compose --env-file .env down",
+    "migration:create": "node-pg-migrate create -m ./migrations",
+    "migration:up": "node-pg-migrate up -m ./migrations --envPath ./.env",
+    "migration:dry-run": "node-pg-migrate up -m ./migrations --dry-run --envPath ./.env"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",

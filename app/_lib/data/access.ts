@@ -1,14 +1,3 @@
-import { z } from "zod";
-import { query } from "@/infra/database";
-import { Result } from "@/models/result";
-
-
-export const Template = z.object({
-    id: z.string(),
-    name: z.string(),
-    user_id: z.string()
-});
-
 export async function getAllTemplates() {
     const { err, payload } = 
         await query("SELECT * FROM template");
@@ -28,4 +17,3 @@ export async function getAllTemplatesByUser(userId: string) {
 
     return { err, payload: payload!.rows };
 }
-

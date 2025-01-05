@@ -1,5 +1,5 @@
 import { OptionsDropdown } from "@/_components/OptionsDropdown";
-import { Selectbox } from "@/_components/Selectbox";
+import { Selectbox } from "@/_components/base/Selectbox";
 
 export function AppOptionsGroup() {
     return (

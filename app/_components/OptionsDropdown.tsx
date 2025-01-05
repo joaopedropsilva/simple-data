@@ -17,7 +17,7 @@ export function OptionsDropdown() {
             <MenuItems
                 transition
                 anchor="bottom"
-                className="w-52 rounded-lg border border-white/5 text-xs/6 mt-2 transition duration-100 ease-out"
+                className="w-52 rounded-lg border border-white/5 text-xs/6 [--anchor-gap:var(--spacing-1)] transition duration-100 ease-out"
             >
                 <MenuItem as="div">
                     <button className="flex items-center gap-1 bg-slate-800 hover:bg-slate-700 p-1 pl-2 w-full">

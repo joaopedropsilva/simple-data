@@ -1,9 +1,10 @@
 import { OptionsDropdown } from "@/_components/OptionsDropdown";
+import { Selectbox } from "@/_components/Selectbox";
 
 export function AppOptionsGroup() {
     return (
         <div className="flex items-center gap-2">
-            <div className="w-24 h-4 bg-slate-100" />
+            <Selectbox options={[]} />
             <OptionsDropdown />
         </div>
     );

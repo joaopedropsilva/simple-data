@@ -3,7 +3,8 @@
 import {
     PlusCircleIcon,
     SquaresPlusIcon,
-    DocumentTextIcon
+    DocumentTextIcon,
+    PencilSquareIcon
 } from "@heroicons/react/24/outline";
 import { Menu, MenuItems, MenuItem, MenuButton } from "@headlessui/react";
 
@@ -16,18 +17,24 @@ export function OptionsDropdown() {
             <MenuItems
                 transition
                 anchor="bottom"
-                className="w-32 rounded-lg border border-white/5 text-xs/6 mt-2 transition duration-100 ease-out"
+                className="w-52 rounded-lg border border-white/5 text-xs/6 mt-2 transition duration-100 ease-out"
             >
                 <MenuItem as="div">
                     <button className="flex items-center gap-1 bg-slate-800 hover:bg-slate-700 p-1 pl-2 w-full">
                         <SquaresPlusIcon className="size-4 fill-slate-300/60" /> 
-                        New Template
+                        New template
                     </button>
                 </MenuItem>
                 <MenuItem as="div">
                     <button className="flex items-center gap-1 bg-slate-800 hover:bg-slate-700 p-1 pl-2 w-full">
                         <DocumentTextIcon className="size-4 fill-slate-300/60" /> 
-                        New Entry
+                        New entry
+                    </button>
+                </MenuItem>
+                <MenuItem as="div">
+                    <button className="flex items-center gap-1 bg-slate-800 hover:bg-slate-700 p-1 pl-2 w-full">
+                        <PencilSquareIcon className="size-4 fill-slate-300/60" />
+                        Edit current template
                     </button>
                 </MenuItem>
             </MenuItems>

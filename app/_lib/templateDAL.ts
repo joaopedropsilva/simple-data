@@ -1,4 +1,4 @@
-import { query } from "@/_lib/data/database";
+import { query } from "@/_lib/database";
 
 export interface TemplateDTO {
     id: string;

@@ -41,7 +41,7 @@ exports.up = (pgm) => {
         }
     );
     pgm.createTable(
-        "template",
+        "entry",
         {
             id: {
                 type: "uuid",
@@ -51,8 +51,7 @@ exports.up = (pgm) => {
             },
             name: {
                 type: "varchar(100)",
-                notNull: true,
-                unique: true,
+                notNull: true
             },
             user_id: {
                 type: "uuid",
@@ -61,6 +60,11 @@ exports.up = (pgm) => {
                 onDelete: "CASCADE",
                 onUpdate: "CASCADE"
             },
+            created_at: {
+                type: "timestamp with time zone",
+                notNull: true,
+                default: pgm.func("(now() at time zone 'utc')"),
+            }
         }
     );
     pgm.createTable(
@@ -74,96 +78,16 @@ exports.up = (pgm) => {
             },
             name: {
                 type: "varchar(100)",
-                notNull: true,
-                unique: true,
-            }
-        }
-    );
-    pgm.createTable(
-        "template_field",
-        {
-            template_id: {
-                type: "uuid",
-                notNull: true,
-                references: "template",
-                onDelete: "CASCADE",
-                onUpdate: "CASCADE"
-            },
-            field_id: {
-                type: "uuid",
-                notNull: true,
-                references: "field",
-                onDelete: "CASCADE",
-                onUpdate: "CASCADE"
-            }
-        },
-        {
-            "constraints": {
-                "primaryKey": ["template_id", "field_id"]
-            }
-        }
-    );
-    pgm.createTable(
-        "entry",
-        {
-            id: {
-                type: "uuid",
-                notNull: true,
-                primaryKey: true,
-                default: pgm.func("gen_random_uuid()")
-            },
-            name: {
-                type: "varchar(100)",
-                notNull: true,
-            },
-            template_id: {
-                type: "uuid",
-                notNull: true,
-                references: "template",
-                onDelete: "CASCADE",
-                onUpdate: "CASCADE"
-            },
-            updated_at: {
-                type: "timestamp with time zone",
-                notNull: true,
-                default: pgm.func("(now() at time zone 'utc')"),
-            },
-            created_at: {
-                type: "timestamp with time zone",
-                notNull: true,
-                default: pgm.func("(now() at time zone 'utc')"),
-            }
-        }
-    );
-    pgm.createTable(
-        "field_value",
-        {
-            id: {
-                type: "uuid",
-                notNull: true,
-                primaryKey: true,
-                default: pgm.func("gen_random_uuid()")
+                notNull: true
             },
             value: {
                 type: "text",
-                notNull: false,
+                notNull: true
             },
-            is_computed: {
-                type: "boolean",
-                notNull: true,
-                default: false
-            },
-            entry_id: {
+            entry_id : {
                 type: "uuid",
                 notNull: true,
                 references: "entry",
-                onDelete: "CASCADE",
-                onUpdate: "CASCADE"
-            },
-            field_id: {
-                type: "uuid",
-                notNull: true,
-                references: "field",
                 onDelete: "CASCADE",
                 onUpdate: "CASCADE"
             }

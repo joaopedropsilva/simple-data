@@ -1,16 +1,17 @@
-import { getAllTemplatesBy } from "@/_lib/data/template";
-import { AppOptionsGroup } from "@/_components/AppOptionsGroup";
+import { CustomButton } from "@/_components/base/CustomButton";
+import Link from "next/link";
 
 export default async function Home() {
-    const userTemplates = await getAllTemplatesBy("de0678c2-ddcf-4f99-a5cf-b4285135fdba");
-
     return (
         <div className="min-w-[650px] max-w-[800px] flex flex-col items-center mx-auto relative h-screen">
-            <header className="w-full p-4 mt-8 flex items-center justify-between">
+            <header className="w-full p-4 mt-8 flex items-center justify-between relative">
                 <h1 className="text-slate-200 text-2xl font-bold italic">
                     simple-data
                 </h1>
-                <AppOptionsGroup />
+
+                <Link href="/entry">
+                    <CustomButton type="button" text="Add new entry" spanOver="right" />
+                </Link>
             </header>
             <hr className="w-full" />
             <main className="w-full">

@@ -1,6 +1,5 @@
 import { Pool, QueryResult, PoolClient, PoolConfig } from "pg";
 
-
 const config: PoolConfig = {
     user: process.env.POSTGRES_USER,
     password: process.env.POSTGRES_PASSWORD,

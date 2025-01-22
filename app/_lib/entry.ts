@@ -7,9 +7,11 @@ export interface EntryDTO {
     id: string;
     name: string;
     user_id: string;
+    created_at?: string;
 }
 
 export interface FieldDTO {
+    id?: string;
     name: string;
     value: string;
     entry_id: string;
@@ -60,6 +62,16 @@ export async function saveEntryAction(
 
 // ----- ENTRY -----
 
+function mapRowsToEntryDTO(rows: any): EntryDTO[] {
+    return rows
+        .map((r: any) => ({
+            id: r.id,
+            name: r.name,
+            user_id: r.user_id,
+            created_at: r.created_at.toISOString()
+        } as EntryDTO));
+}
+
 export async function getEntryById(
     entryId: string
 ): Promise<EntryDTO | null> {
@@ -78,7 +90,7 @@ export async function getEntryById(
         return null;
     }
 
-    return rows[0];
+    return mapRowsToEntryDTO(rows)[0];
 }
 
 export async function getAllEntriesByUser(
@@ -93,7 +105,7 @@ export async function getAllEntriesByUser(
         return [];
     }
 
-    return rows;
+    return mapRowsToEntryDTO(rows);
 }
 
 async function insertNewEntry(
@@ -135,7 +147,17 @@ async function updateEntryNameById(
 
 // ---- FIELDS -----
 
-async function getAllFieldsByEntry(
+function mapRowsToFieldDTO(rows: any): FieldDTO[] {
+    return rows
+        .map((r: any) => ({
+            id: r.id,
+            name: r.name,
+            value: r.value,
+            entry_id: r.entry_id
+        } as FieldDTO));
+}
+
+export async function getAllFieldsByEntry(
     entryId: string
 ): Promise<FieldDTO[]> {
     const { err, rows } =
@@ -153,7 +175,7 @@ async function getAllFieldsByEntry(
         return [];
     }
 
-    return rows;
+    return mapRowsToFieldDTO(rows);
 }
 
 async function insertNewField(

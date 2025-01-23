@@ -18,6 +18,7 @@ export interface FieldDTO {
 }
 
 const clientFieldDataSchema = z.object({
+    id: z.string(),
     name: z.string().trim().min(1).max(100),
     value: z.string(),
 });

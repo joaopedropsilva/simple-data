@@ -6,6 +6,7 @@ import { TrashIcon, PlusIcon } from "@heroicons/react/24/solid";
 import React, { useState } from "react";
 import { v4 as uuidV4 } from "uuid";
 import { saveEntryAction } from "@/_lib/entry";
+import { useRouter } from "next/navigation";
 
 
 interface Field {
@@ -15,7 +16,7 @@ interface Field {
 }
 
 export interface EntryFormProps {
-    entryId: string;
+    entryId?: string;
     entryTitle: string;
     loadedFields: Field[];
 }
@@ -23,6 +24,7 @@ export interface EntryFormProps {
 export function EntryForm({ entryId, entryTitle, loadedFields }: EntryFormProps) {
     const [fields, setFields] = useState<Field[]>(loadedFields);
     const [title, setTitle] = useState<string>(entryTitle);
+    const router = useRouter();
 
     function handleAddField() {
         setFields([
@@ -48,25 +50,6 @@ export function EntryForm({ entryId, entryTitle, loadedFields }: EntryFormProps)
     function handleSubmit(event: React.SyntheticEvent) {
         event.preventDefault();
 
-        type EntryFormFieldsOnDOM = {
-            title: { value: string };
-            field: any;
-            fvalue: any;
-        }
-        const target = event.target as typeof event.target & EntryFormFieldsOnDOM;
-
-        if (!target.field && !target.fvalue)
-            return;
-
-        const fieldsOnDOM =
-            typeof target.field.forEach !== "function"
-                ? [target.field]
-                : [...target.field];
-        const fvaluesOnDOM =
-            typeof target.fvalue.forEach !== "function"
-                ? [target.fvalue]
-                : [...target.fvalue];
-
         type EntryExpectedSchema = {
             id: string;
             name: string;
@@ -76,20 +59,21 @@ export function EntryForm({ entryId, entryTitle, loadedFields }: EntryFormProps)
             }[];
         };
         const entryData: EntryExpectedSchema = {
-            id: entryId,
-            name: target.title.value,
-            fields: [] 
+            id: entryId ?? uuidV4(),
+            name: title,
+            fields: fields
         };
-
-        fieldsOnDOM.forEach((f: any, index: number) => {
-            entryData.fields.push({
-                name: f.value,
-                value: fvaluesOnDOM[index].value
-            } );
-        });
 
         saveEntryAction(entryData);
     }
+
+    function handleResetForm() {
+        setTitle("New Entry");
+        setFields([]);
+
+        router.push("/entry");
+    }
+
 
     return (
         <form
@@ -153,11 +137,11 @@ export function EntryForm({ entryId, entryTitle, loadedFields }: EntryFormProps)
                 <div className="w-full flex items-center justify-center gap-2 mt-1 relative">
                     <CustomButton
                         type="submit"
-                        text="Criar"
+                        text="Salvar"
                     />
                     <CustomButton 
                         type="button"
-                        onClick={() => { setFields([]); setTitle("New Entry"); }}
+                        onClick={handleResetForm}
                         icon={<TrashIcon className="size-4 fill-red-600"/>}
                         spanOver="right"
                     />

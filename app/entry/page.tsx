@@ -15,7 +15,7 @@ export default async function Entry({ searchParams }: { searchParams: { id?: str
     return (
         <div className="mt-20 mx-auto flex justify-center">
             <EntryForm
-                entryId={id ?? uuidV4()}
+                entryId={id}
                 entryTitle={entryTitle}
                 loadedFields={loadedFields}
             />

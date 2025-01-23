@@ -8,15 +8,37 @@ import { v4 as uuidV4 } from "uuid";
 import { saveEntryAction } from "@/_lib/entry";
 
 
-export function EntryForm({ entryId }: { entryId: string }) {
-    // TENTAR NÃO TRABALHAR COM ID
-    const [fields, setFields] = useState<{ id: string; name: string; }[]>([]);
-    
+interface Field {
+    id: string;
+    name: string;
+    value: string;
+}
+
+export interface EntryFormProps {
+    entryId: string;
+    entryTitle: string;
+    loadedFields: Field[];
+}
+
+export function EntryForm({ entryId, entryTitle, loadedFields }: EntryFormProps) {
+    const [fields, setFields] = useState<Field[]>(loadedFields);
+    const [title, setTitle] = useState<string>(entryTitle);
+
     function handleAddField() {
         setFields([
             ...fields,
-            { id: uuidV4(), name: "" }
+            { id: uuidV4(), name: "", value: "" }
         ]);
+    }
+
+    function handleChangeFieldData(fieldData: Field) {
+        setFields((prevFields: Field[]) => {
+            return prevFields
+                .map(f => f.id === fieldData.id
+                    ? { ...f, name: fieldData.name, value: fieldData.value }
+                    : f
+                )
+        });
     }
 
     function handleRemoveFieldBy(id: string) {
@@ -32,6 +54,10 @@ export function EntryForm({ entryId }: { entryId: string }) {
             fvalue: any;
         }
         const target = event.target as typeof event.target & EntryFormFieldsOnDOM;
+
+        if (!target.field && !target.fvalue)
+            return;
+
         const fieldsOnDOM =
             typeof target.field.forEach !== "function"
                 ? [target.field]
@@ -71,18 +97,19 @@ export function EntryForm({ entryId }: { entryId: string }) {
             className="mt-16 w-[500px] bg-slate-800 rounded-lg"
         >
             <div className="w-full p-2">
-                <Field className="w-full flex justify-center mb-1">
+                <Field className="w-full mb-1">
                     <Input
                         required
                         type="text"
                         name="title"
-                        className="bg-transparent w-max border-none text-xl p-1 text-slate-300 font-bold focus:outline-none data-[focus]:outline-1 data-[focus]:outline-offset-2 data-[focus]:outline-white/25 rounded-md"
-                        defaultValue="New Entry"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        className="bg-transparent w-full border-none text-xl p-1 text-slate-300 font-bold focus:outline-none data-[focus]:outline-1 data-[focus]:outline-offset-2 data-[focus]:outline-white/25 rounded-md"
                     />
                 </Field>
                 <div className="w-full rounded-md bg-slate-700 flex flex-col items-center justify-center p-1 my-2">
                     {
-                        fields.map(({ id, name }, index) => (
+                        fields.map(({ id, name, value }, index) => (
                             <div
                                 key={`input-group-${index}`}
                                 className="w-full flex gap-2 p-1"
@@ -92,7 +119,8 @@ export function EntryForm({ entryId }: { entryId: string }) {
                                         required
                                         name="field"
                                         placeholder="field"
-                                        defaultValue={name}
+                                        value={name}
+                                        onChange={(e) => handleChangeFieldData({ id, name: e.target.value, value })}
                                         className="bg-slate-800 w-full border-none text-md p-2 text-slate-300 focus:outline-none data-[focus]:outline-1 data-[focus]:outline-offset-1 data-[focus]:outline-white/25 rounded-md"
                                     />
                                 </Field>
@@ -100,7 +128,8 @@ export function EntryForm({ entryId }: { entryId: string }) {
                                     <Input
                                         name="fvalue"
                                         placeholder="value"
-                                        defaultValue=""
+                                        value={value}
+                                        onChange={(e) => handleChangeFieldData({ id, name, value: e.target.value })}
                                         className="bg-slate-800 w-full border-none text-md p-2 text-slate-300 focus:outline-none data-[focus]:outline-1 data-[focus]:outline-offset-1 data-[focus]:outline-white/25 rounded-md"
                                     />
                                 </Field>
@@ -127,7 +156,8 @@ export function EntryForm({ entryId }: { entryId: string }) {
                         text="Criar"
                     />
                     <CustomButton 
-                        type="reset"
+                        type="button"
+                        onClick={() => { setFields([]); setTitle("New Entry"); }}
                         icon={<TrashIcon className="size-4 fill-red-600"/>}
                         spanOver="right"
                     />

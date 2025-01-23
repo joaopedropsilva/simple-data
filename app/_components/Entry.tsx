@@ -3,7 +3,7 @@ import { ChevronDownIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
 import { getAllFieldsByEntry, getEntryById } from "@/_lib/entry";
 import Link from "next/link";
 
-export async function Entry({ entryId }: { entryId: string; }) {
+export async function Entry({ entryId, userId }: { entryId: string; userId: string; }) {
     const entry = await getEntryById(entryId);
     const fields = await getAllFieldsByEntry(entryId);
 
@@ -49,7 +49,7 @@ export async function Entry({ entryId }: { entryId: string; }) {
                     </div>
                 </DisclosurePanel>
             </Disclosure>
-                <Link href={`/entry?id=${entryId}`} className="group p-2 bg-slate-800 hover:bg-slate-700 flex items-center rounded-lg">
+                <Link href={`/entry?id=${entryId}&user=${userId}`} className="group p-2 bg-slate-800 hover:bg-slate-700 flex items-center rounded-lg">
                 <PencilSquareIcon className="size-4 fill-white group-hover:fill-white/80" />
             </Link>
         </div>

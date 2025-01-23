@@ -26,6 +26,7 @@ const clientFieldDataSchema = z.object({
 const clientEntryDataSchema = z.object({
     id: z.string().trim().min(1).max(100),
     name: z.string().trim().min(1),
+    user_id: z.string().trim().min(1),
     fields: z.array(clientFieldDataSchema).nonempty()
 });
 
@@ -37,7 +38,8 @@ export async function saveEntryAction(
     if (!validated.success)
         return
 
-    const userId = "49449927-ffa3-4eaa-8c5c-7de126a4f786"; // recover current user_id
+    const userId = validated.data.user_id;
+    console.log("ID", userId);
     let entryData = await getEntryById(validated.data.id);
 
     if (!entryData) {

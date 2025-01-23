@@ -6,7 +6,7 @@ import { TrashIcon, PlusIcon } from "@heroicons/react/24/solid";
 import React, { useState } from "react";
 import { v4 as uuidV4 } from "uuid";
 import { saveEntryAction } from "@/_lib/entry";
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 
 
 interface Field {
@@ -17,14 +17,14 @@ interface Field {
 
 export interface EntryFormProps {
     entryId?: string;
+    userId?: string;
     entryTitle: string;
     loadedFields: Field[];
 }
 
-export function EntryForm({ entryId, entryTitle, loadedFields }: EntryFormProps) {
+export function EntryForm({ entryId, entryTitle, userId, loadedFields }: EntryFormProps) {
     const [fields, setFields] = useState<Field[]>(loadedFields);
     const [title, setTitle] = useState<string>(entryTitle);
-    const router = useRouter();
 
     function handleAddField() {
         setFields([
@@ -50,8 +50,12 @@ export function EntryForm({ entryId, entryTitle, loadedFields }: EntryFormProps)
     function handleSubmit(event: React.SyntheticEvent) {
         event.preventDefault();
 
+        if (!userId)
+            return;
+
         type EntryExpectedSchema = {
             id: string;
+            user_id: string;
             name: string;
             fields: {
                 name: string;
@@ -60,18 +64,21 @@ export function EntryForm({ entryId, entryTitle, loadedFields }: EntryFormProps)
         };
         const entryData: EntryExpectedSchema = {
             id: entryId ?? uuidV4(),
+            user_id: userId,
             name: title,
             fields: fields
         };
 
         saveEntryAction(entryData);
+
+        redirect(`/?id=${userId}`);
     }
 
     function handleResetForm() {
         setTitle("New Entry");
         setFields([]);
 
-        router.push("/entry");
+        redirect(`/entry?user=${userId}`);
     }
 
 

@@ -1,10 +1,15 @@
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { getAllEntriesByUser } from "@/_lib/entry";
+import { redirect } from "next/navigation";
 import { Entry } from "@/_components/Entry";
 
-export default async function Home() {
-    const entries = await getAllEntriesByUser("49449927-ffa3-4eaa-8c5c-7de126a4f786");
+export default async function Home({ searchParams }: { searchParams: { id?: string; } }) {
+    const { id } = await searchParams;
+    if (!id)
+        redirect("/auth");
+
+    const entries = await getAllEntriesByUser(id);
 
     return (
         <div className="min-w-[650px] max-w-[800px] flex flex-col items-center mx-auto relative h-screen">
@@ -13,7 +18,7 @@ export default async function Home() {
                     simple-data
                 </h1>
 
-                <Link href="/entry" className="rounded-lg bg-slate-800 data-[open]:bg-slate-700 hover:bg-slate-700 p-1">
+                <Link href={`/entry?user=${id}`} className="rounded-lg bg-slate-800 data-[open]:bg-slate-700 hover:bg-slate-700 p-1">
                     <PlusCircleIcon className="size-6 text-slate-300" aria-hidden="true" /> 
                 </Link>
             </header>
@@ -23,7 +28,7 @@ export default async function Home() {
                    { 
                        entries.map(entry => (
                             <div className="w-full" key={entry.id}>
-                                <Entry entryId={entry.id} />
+                                <Entry entryId={entry.id} userId={id} />
                             </div>
                        ))
                    }

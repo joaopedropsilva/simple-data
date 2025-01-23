@@ -71,7 +71,7 @@ export function EntryForm({ entryId, entryTitle, userId, loadedFields }: EntryFo
 
         saveEntryAction(entryData);
 
-        redirect(`/?id=${userId}`);
+        redirect("/");
     }
 
     function handleResetForm() {

@@ -71,7 +71,7 @@ export async function auth(
     }
 
     await createSession(userId);
-    redirect(`/?id=${uuidV4()}`);
+    redirect("/");
 }
 
 // --- JWT
@@ -116,10 +116,21 @@ export async function createSession(userId: string) {
         path: "/",
     });
 }
+export async function verifySession() {
+    // @ts-ignore
+    const cookie = (await cookies()).get("session")?.value;
+    const session = await decrypt(cookie);
+
+    if (!session?.userId) {
+        redirect("/auth");
+    }
+
+    return session.userId as string;
+}
 
 export async function deleteSession() {
     // @ts-ignore
-    cookies().delete("session");
+    (await cookies()).delete("session");
     redirect("/");
 }
 

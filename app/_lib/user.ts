@@ -28,9 +28,8 @@ export async function getUser(
                 FROM public.user
                 WHERE username = $1
                     AND email = $2
-                    AND password = $3
             `,
-            [userData.username, userData.email, userData.password]);
+            [userData.username, userData.email]);
 
     if (err) {
         console.error(err);

@@ -54,16 +54,25 @@ export async function auth(
     const validUserInfo = {
         username: validated.data.username,
         email: validated.data.email,
-        password: await bcrypt.hash(validated.data.password, 10)
+        password: validated.data.password
     }
 
     const userInDb = await getUser(validUserInfo);
     const userId = userInDb?.id! ?? uuidV4();
 
+    const doesPasswordMatch = userInDb && (await bcrypt.compare(
+        validUserInfo.password,
+        userInDb.password
+    ));
+
+    if (userInDb && !doesPasswordMatch)
+        return { message: "Usuário já existe, forneça as credenciais corretas!" };
+
     if (!userInDb) {
         const user = {
+            ...validUserInfo,
             id: userId,
-            ...validUserInfo
+            password: await bcrypt.hash(validUserInfo.password, 10)
         };
 
         if (!insertNewUser(user))
@@ -77,8 +86,8 @@ export async function auth(
 // --- JWT
 
 type SessionPayload = {
-  userId: string | number;
-  expiresAt: Date;
+    userId: string | number;
+    expiresAt: Date;
 };
 
 const secretKey = process.env.SECRET;

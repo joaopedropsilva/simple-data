@@ -39,7 +39,6 @@ export async function saveEntryAction(
         return
 
     const userId = validated.data.user_id;
-    console.log("ID", userId);
     let entryData = await getEntryById(validated.data.id);
 
     if (!entryData) {
@@ -71,7 +70,7 @@ function mapRowsToEntryDTO(rows: any): EntryDTO[] {
             id: r.id,
             name: r.name,
             user_id: r.user_id,
-            created_at: r.created_at.toISOString()
+            created_at: r.created_at.toLocaleString()
         } as EntryDTO));
 }
 
